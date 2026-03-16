@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ritisha Singh — Business Analyst</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #1a1814;
+    --paper: #f5f2eb;
+    --warm: #c8a96e;
+    --muted: #7a7469;
+    --light: #e8e3d8;
+    --accent: #2d4a3e;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.25rem 3rem;
+    background: rgba(245,242,235,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--light);
+  }
+  .nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.1rem; letter-spacing: 0.02em; color: var(--ink); text-decoration: none; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { font-size: 0.85rem; font-weight: 400; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--ink); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 80px;
+  }
+  .hero-left {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 4rem 3rem 4rem 3rem;
+  }
+  .hero-eyebrow {
+    font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--warm); font-weight: 500; margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .hero-eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--warm); }
+  .hero-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(3rem, 5vw, 5rem);
+    line-height: 1.05;
+    margin-bottom: 1.5rem;
+    color: var(--ink);
+  }
+  .hero-name em { font-style: italic; color: var(--accent); }
+  .hero-desc {
+    font-size: 1.05rem; color: var(--muted); max-width: 440px;
+    line-height: 1.8; margin-bottom: 2.5rem;
+  }
+  .hero-ctas { display: flex; gap: 1rem; align-items: center; }
+  .btn-primary {
+    background: var(--accent); color: #fff;
+    padding: 0.75rem 1.75rem; border-radius: 2px;
+    font-size: 0.85rem; letter-spacing: 0.06em; text-transform: uppercase;
+    text-decoration: none; font-weight: 500;
+    transition: background 0.2s;
+  }
+  .btn-primary:hover { background: #1e3329; }
+  .btn-ghost {
+    color: var(--muted); font-size: 0.85rem; letter-spacing: 0.06em;
+    text-transform: uppercase; text-decoration: none;
+    display: flex; align-items: center; gap: 0.5rem;
+    transition: color 0.2s;
+  }
+  .btn-ghost:hover { color: var(--ink); }
+  .btn-ghost::after { content: '→'; }
+
+  .hero-right {
+    background: var(--accent);
+    position: relative; overflow: hidden;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 3rem;
+  }
+  .hero-right-pattern {
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle at 30% 40%, rgba(200,169,110,0.15) 0%, transparent 60%),
+      repeating-linear-gradient(45deg, transparent, transparent 30px, rgba(255,255,255,0.025) 30px, rgba(255,255,255,0.025) 31px);
+  }
+  .hero-stats {
+    position: relative; z-index: 1;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+  }
+  .stat { border-top: 1px solid rgba(255,255,255,0.2); padding-top: 1rem; }
+  .stat-number { font-family: 'DM Serif Display', serif; font-size: 2.5rem; color: #fff; line-height: 1; }
+  .stat-label { font-size: 0.78rem; color: rgba(255,255,255,0.55); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 0.25rem; }
+  .hero-right-tag {
+    position: absolute; top: 2.5rem; right: 2.5rem;
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.7); font-size: 0.75rem; letter-spacing: 0.08em;
+    text-transform: uppercase; padding: 0.5rem 1rem; border-radius: 1px;
+  }
+
+  /* SECTION COMMON */
+  section { padding: 6rem 3rem; }
+  .section-label {
+    font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--warm); font-weight: 500; margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .section-label::before { content: ''; display: block; width: 24px; height: 1px; background: var(--warm); }
+  .section-title { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 3vw, 2.75rem); line-height: 1.15; margin-bottom: 1rem; }
+
+  /* ABOUT */
+  .about { background: var(--ink); color: var(--paper); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 5rem; align-items: start; margin-top: 3rem; }
+  .about .section-title { color: var(--paper); }
+  .about .section-label { color: var(--warm); }
+  .about-bio { font-size: 1.05rem; color: rgba(245,242,235,0.7); line-height: 1.9; }
+  .about-bio p + p { margin-top: 1rem; }
+  .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.08); }
+  .skill-item {
+    padding: 1.25rem 1.5rem;
+    background: rgba(255,255,255,0.03);
+    transition: background 0.2s;
+  }
+  .skill-item:hover { background: rgba(255,255,255,0.07); }
+  .skill-item-title { font-size: 0.85rem; font-weight: 500; color: var(--paper); margin-bottom: 0.25rem; }
+  .skill-item-desc { font-size: 0.78rem; color: rgba(245,242,235,0.45); }
+
+  /* EXPERIENCE */
+  .experience { background: var(--paper); }
+  .exp-list { margin-top: 3rem; }
+  .exp-item {
+    display: grid; grid-template-columns: 180px 1fr;
+    gap: 2rem; padding: 2rem 0;
+    border-top: 1px solid var(--light);
+  }
+  .exp-item:last-child { border-bottom: 1px solid var(--light); }
+  .exp-meta { padding-top: 0.2rem; }
+  .exp-company { font-weight: 500; font-size: 0.9rem; color: var(--ink); }
+  .exp-period { font-size: 0.78rem; color: var(--muted); margin-top: 0.25rem; }
+  .exp-location { font-size: 0.75rem; color: var(--warm); margin-top: 0.25rem; letter-spacing: 0.04em; }
+  .exp-role { font-family: 'DM Serif Display', serif; font-size: 1.35rem; margin-bottom: 0.75rem; }
+  .exp-bullets { list-style: none; }
+  .exp-bullets li { font-size: 0.9rem; color: var(--muted); padding: 0.3rem 0; display: flex; gap: 0.75rem; }
+  .exp-bullets li::before { content: '—'; color: var(--warm); flex-shrink: 0; }
+
+  /* PROJECTS */
+  .projects { background: #f0ece1; }
+  .projects-intro { font-size: 1rem; color: var(--muted); max-width: 560px; margin-top: 0.5rem; margin-bottom: 3rem; }
+  .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .project-card {
+    background: var(--paper);
+    border: 1px solid var(--light);
+    padding: 1.75rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+  }
+  .project-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 3px; background: var(--warm);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.3s;
+  }
+  .project-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(26,24,20,0.1); }
+  .project-card:hover::before { transform: scaleX(1); }
+  .project-num { font-size: 0.75rem; color: var(--warm); letter-spacing: 0.1em; margin-bottom: 1rem; font-weight: 500; }
+  .project-title { font-family: 'DM Serif Display', serif; font-size: 1.2rem; margin-bottom: 0.75rem; line-height: 1.3; }
+  .project-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.25rem; }
+  .project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.25rem; }
+  .project-tag {
+    font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 0.2rem 0.6rem; border: 1px solid var(--light);
+    color: var(--muted);
+  }
+  .project-link {
+    font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--accent); text-decoration: none; font-weight: 500;
+    display: flex; align-items: center; gap: 0.4rem;
+    transition: gap 0.2s;
+  }
+  .project-link:hover { gap: 0.75rem; }
+  .project-link::after { content: '→'; }
+  .project-card.featured { background: var(--accent); }
+  .project-card.featured .project-num { color: var(--warm); }
+  .project-card.featured .project-title { color: #fff; }
+  .project-card.featured .project-desc { color: rgba(255,255,255,0.6); }
+  .project-card.featured .project-tag { border-color: rgba(255,255,255,0.2); color: rgba(255,255,255,0.55); }
+  .project-card.featured .project-link { color: var(--warm); }
+  .project-card.featured::before { background: var(--warm); }
+
+  /* CONTACT */
+  .contact { background: var(--ink); color: var(--paper); text-align: center; }
+  .contact .section-label { justify-content: center; }
+  .contact .section-label::before { display: none; }
+  .contact .section-title { color: var(--paper); font-size: clamp(2.5rem, 4vw, 3.5rem); margin-bottom: 1rem; }
+  .contact-sub { font-size: 1rem; color: rgba(245,242,235,0.55); margin-bottom: 2.5rem; }
+  .contact-links { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; }
+  .contact-link {
+    font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 0.85rem 2rem; border: 1px solid rgba(255,255,255,0.2);
+    color: var(--paper); text-decoration: none;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .contact-link:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.4); }
+  .contact-link.primary { background: var(--warm); border-color: var(--warm); color: var(--ink); font-weight: 500; }
+  .contact-link.primary:hover { background: #b8955a; border-color: #b8955a; }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink); border-top: 1px solid rgba(255,255,255,0.07);
+    padding: 1.5rem 3rem; display: flex; justify-content: space-between; align-items: center;
+  }
+  footer p { font-size: 0.78rem; color: rgba(245,242,235,0.3); letter-spacing: 0.04em; }
+
+  /* ANIMATIONS */
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { min-height: 300px; }
+    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
+    section { padding: 4rem 1.5rem; }
+    .hero-left { padding: 4rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">Ritisha Singh</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="padding:0;">
+  <div class="hero-left">
+    <div class="hero-eyebrow fade-up">Available for hire · Göteborg, Sweden</div>
+    <h1 class="hero-name fade-up" style="transition-delay:0.1s">
+      Business<br><em>Analyst</em><br>& Strategist
+    </h1>
+    <p class="hero-desc fade-up" style="transition-delay:0.2s">
+      I turn messy business problems into clear solutions. 5+ years bridging strategy, data, and digital transformation at Deloitte, EY, and SKF.
+    </p>
+    <div class="hero-ctas fade-up" style="transition-delay:0.3s">
+      <a href="#projects" class="btn-primary">View my work</a>
+      <a href="#contact" class="btn-ghost">Get in touch</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-right-pattern"></div>
+    <div class="hero-right-tag">Open to opportunities</div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-number">5+</div><div class="stat-label">Years experience</div></div>
+      <div class="stat"><div class="stat-number">3</div><div class="stat-label">Global firms</div></div>
+      <div class="stat"><div class="stat-number">MBA</div><div class="stat-label">Education</div></div>
+      <div class="stat"><div class="stat-number">SE</div><div class="stat-label">Göteborg, valid visa</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="section-label">About me</div>
+  <div class="about-grid">
+    <div>
+      <h2 class="section-title">I make transformation actually work.</h2>
+    </div>
+    <div>
+      <div class="about-bio fade-up">
+        <p>I'm a Business Analyst with a Computer Engineering background and an MBA — which means I'm equally comfortable in a strategy workshop and a sprint planning session.</p>
+        <p>From leading post-merger HRIS integrations at SKF to delivering digital transformation projects at EY, I've spent 5+ years translating business complexity into structured, actionable outcomes.</p>
+        <p>Now based in Göteborg with a valid Swedish work visa, I'm looking for my next challenge in a company where process improvement, data, and technology intersect.</p>
+      </div>
+    </div>
+  </div>
+  <div class="skills-grid fade-up" style="margin-top:3rem; transition-delay:0.15s">
+    <div class="skill-item"><div class="skill-item-title">Requirements & process design</div><div class="skill-item-desc">User stories, workflows, gap analysis</div></div>
+    <div class="skill-item"><div class="skill-item-title">Data & reporting</div><div class="skill-item-desc">Analytics, visualization, automation</div></div>
+    <div class="skill-item"><div class="skill-item-title">Stakeholder management</div><div class="skill-item-desc">Workshops, alignment, change comms</div></div>
+    <div class="skill-item"><div class="skill-item-title">Digital transformation</div><div class="skill-item-desc">Agile delivery, HRIS, product integration</div></div>
+    <div class="skill-item"><div class="skill-item-title">Business case & ROI</div><div class="skill-item-desc">Investment analysis, executive reporting</div></div>
+    <div class="skill-item"><div class="skill-item-title">Post-merger integration</div><div class="skill-item-desc">Policy mapping, data migration, onboarding</div></div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="experience" id="experience">
+  <div class="section-label">Experience</div>
+  <h2 class="section-title">Where I've worked</h2>
+  <div class="exp-list">
+
+    <div class="exp-item fade-up">
+      <div class="exp-meta">
+        <div class="exp-company">SKF</div>
+        <div class="exp-period">Aug 2024 – Dec 2025</div>
+        <div class="exp-location">Göteborg, Sweden</div>
+      </div>
+      <div>
+        <div class="exp-role">PX Specialist, Lubrication</div>
+        <ul class="exp-bullets">
+          <li>Led post-merger integration of JSG across global HR, IT, and operations teams</li>
+          <li>Defined end-to-end process improvements for digital tools within People Strategy 2025</li>
+          <li>Facilitated stakeholder workshops to translate business needs into user stories and test cases</li>
+          <li>Drove data accuracy improvements, automation, and adoption through training & change comms</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item fade-up">
+      <div class="exp-meta">
+        <div class="exp-company">Ernst & Young</div>
+        <div class="exp-period">Sep 2023 – Jun 2024</div>
+        <div class="exp-location">Mumbai, India</div>
+      </div>
+      <div>
+        <div class="exp-role">Business Consultant, Process Improvement</div>
+        <ul class="exp-bullets">
+          <li>Delivered process improvement and digital transformation projects across multiple industries</li>
+          <li>Designed optimised workflows and digital process blueprints from business requirements</li>
+          <li>Built business cases and ROI assessments for transformation programmes</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item fade-up">
+      <div class="exp-meta">
+        <div class="exp-company">Deloitte</div>
+        <div class="exp-period">Sep 2021 – Jun 2023</div>
+        <div class="exp-location">Mumbai, India</div>
+      </div>
+      <div>
+        <div class="exp-role">Analyst, US Strategy</div>
+        <ul class="exp-bullets">
+          <li>Conducted strategic analysis of digital applications for US leadership portfolio decisions</li>
+          <li>Managed end-to-end data collection, visualisation, and competitor tracking</li>
+          <li>Built internal frameworks to automate reporting across regional business and IT teams</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item fade-up">
+      <div class="exp-meta">
+        <div class="exp-company">Manipal Cigna</div>
+        <div class="exp-period">May 2019 – Aug 2021</div>
+        <div class="exp-location">Mumbai, India</div>
+      </div>
+      <div>
+        <div class="exp-role">Assistant Manager, Health Risk Management</div>
+        <ul class="exp-bullets">
+          <li>Led digital transformation of the Wellness App, improving backend workflows</li>
+          <li>Increased customer engagement by 7% through competitor and market analysis</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="projects" id="projects">
+  <div class="section-label">Portfolio projects</div>
+  <h2 class="section-title">Tools I've built</h2>
+  <p class="projects-intro">AI-powered business tools that demonstrate real BA skills — each one solves a problem I've faced firsthand.</p>
+
+  <div class="projects-grid">
+
+    <div class="project-card featured fade-up">
+      <div class="project-num">01 · Live</div>
+      <div class="project-title">Business Case Generator</div>
+      <div class="project-desc">Enter a project idea and get a full structured business case with ROI analysis, risk assessment, and executive summary — powered by AI.</div>
+      <div class="project-tags">
+        <span class="project-tag">AI-powered</span>
+        <span class="project-tag">ROI analysis</span>
+        <span class="project-tag">BA tooling</span>
+      </div>
+      <a href="business-case-generator.html" class="project-link">Try it now</a>
+    </div>
+
+    <div class="project-card fade-up" style="transition-delay:0.1s">
+      <div class="project-num">02 · Coming soon</div>
+      <div class="project-title">Requirements & User Story Builder</div>
+      <div class="project-desc">Turn a rough business need into structured user stories, acceptance criteria, and test cases. Reduces workshop-to-backlog time significantly.</div>
+      <div class="project-tags">
+        <span class="project-tag">Agile</span>
+        <span class="project-tag">Product</span>
+        <span class="project-tag">AI-powered</span>
+      </div>
+      <a href="#" class="project-link" style="opacity:0.45; pointer-events:none">In progress</a>
+    </div>
+
+    <div class="project-card fade-up" style="transition-delay:0.2s">
+      <div class="project-num">03 · Coming soon</div>
+      <div class="project-title">Process Optimisation Dashboard</div>
+      <div class="project-desc">Visual KPI dashboard simulating real BA reporting — bottleneck identification, trend analysis, and stakeholder-ready charts.</div>
+      <div class="project-tags">
+        <span class="project-tag">Data viz</span>
+        <span class="project-tag">Dashboards</span>
+        <span class="project-tag">Reporting</span>
+      </div>
+      <a href="#" class="project-link" style="opacity:0.45; pointer-events:none">In progress</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="section-label">Get in touch</div>
+  <h2 class="section-title">Let's work together.</h2>
+  <p class="contact-sub">Open to Business Analyst, Product Analyst, and Transformation roles in Göteborg and remote.</p>
+  <div class="contact-links">
+    <a href="mailto:ritishasingh01@gmail.com" class="contact-link primary">ritishasingh01@gmail.com</a>
+    <a href="tel:+46793544322" class="contact-link">+46 793 544 322</a>
+    <a href="https://linkedin.com" class="contact-link" target="_blank">LinkedIn</a>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Ritisha Singh</p>
+  <p>Göteborg, Sweden · Valid work visa</p>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  window.addEventListener('load', () => {
+    document.querySelectorAll('.hero .fade-up').forEach(el => el.classList.add('visible'));
+  });
+</script>
+</body>
+</html>
