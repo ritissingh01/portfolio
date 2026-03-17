@@ -274,11 +274,23 @@ Use EXACTLY these markers on their own lines:
 ##MANAGEMENT_CASE##
 (Governance, delivery approach, milestones, team structure, change management, benefits realisation)
 
+##SWOT_STRENGTHS##
+(Expand the user strengths into 3-4 professional analytical sentences with strategic implications)
+
+##SWOT_WEAKNESSES##
+(Expand the user weaknesses into 3-4 professional analytical sentences with strategic implications)
+
+##SWOT_OPPORTUNITIES##
+(Expand the user opportunities into 3-4 professional analytical sentences with strategic implications)
+
+##SWOT_THREATS##
+(Expand the user threats into 3-4 professional analytical sentences with strategic implications)
+
 ##RISK_REGISTER##
 (5 rows, pipe-separated: Risk Description|Likelihood (High/Medium/Low)|Impact (High/Medium/Low)|Mitigation Strategy)`;
 
   try{
-    const res=await fetch('/.netlify/functions/claude-proxy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'gemini-2.0-flash',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
+    const res=await fetch('/.netlify/functions/claude-proxy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'gemini-2.0-flash',max_tokens:4000,messages:[{role:'user',content:prompt}]})});
     const result=await res.json();
     if(result.error)throw new Error(result.error);
     const text=result.content[0].text;
@@ -288,10 +300,10 @@ Use EXACTLY these markers on their own lines:
     document.getElementById('out-commercial').textContent=extractSection(text,'COMMERCIAL_CASE');
     document.getElementById('out-financial').textContent=extractSection(text,'FINANCIAL_CASE');
     document.getElementById('out-management').textContent=extractSection(text,'MANAGEMENT_CASE');
-    document.getElementById('out-swot-s').textContent=d.swotS||'Not provided';
-    document.getElementById('out-swot-w').textContent=d.swotW||'Not provided';
-    document.getElementById('out-swot-o').textContent=d.swotO||'Not provided';
-    document.getElementById('out-swot-t').textContent=d.swotT||'Not provided';
+    document.getElementById('out-swot-s').textContent=extractSection(text,'SWOT_STRENGTHS');
+    document.getElementById('out-swot-w').textContent=extractSection(text,'SWOT_WEAKNESSES');
+    document.getElementById('out-swot-o').textContent=extractSection(text,'SWOT_OPPORTUNITIES');
+    document.getElementById('out-swot-t').textContent=extractSection(text,'SWOT_THREATS');
     const riskSection=extractSection(text,'RISK_REGISTER');
     const riskRows=riskSection.split('\n').filter(r=>r.includes('|'));
     const tbody=document.getElementById('riskTableBody');
