@@ -11,7 +11,7 @@ exports.handler = async function(event) {
         parts: [{ text: body.messages[0].content }]
       }],
       generationConfig: {
-        maxOutputTokens: body.max_tokens || 1000
+        maxOutputTokens: body.max_tokens || 4000
       }
     };
 
