@@ -6,64 +6,85 @@
 <title>Business Case Generator — Ritisha Singh</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
 <style>
-  :root {
-    --ink: #1a1814; --paper: #f5f2eb; --warm: #c8a96e;
-    --muted: #7a7469; --light: #e8e3d8; --accent: #2d4a3e;
-  }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(--ink); font-size: 16px; line-height: 1.7; }
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 1.25rem 3rem; background: rgba(245,242,235,0.92);
-    backdrop-filter: blur(8px); border-bottom: 1px solid var(--light);
-  }
-  .nav-logo { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: var(--ink); text-decoration: none; }
-  .nav-back { font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; transition: color 0.2s; }
-  .nav-back:hover { color: var(--ink); }
-  .nav-back::before { content: '←'; }
-  main { max-width: 760px; margin: 0 auto; padding: 7rem 2rem 5rem; }
-  .page-eyebrow { font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--warm); font-weight: 500; display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
-  .page-eyebrow::before { content: ''; display: block; width: 24px; height: 1px; background: var(--warm); }
-  h1 { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 4vw, 2.75rem); margin-bottom: 0.75rem; line-height: 1.15; }
-  .page-desc { color: var(--muted); font-size: 1rem; margin-bottom: 3rem; max-width: 560px; }
-  .form-section { margin-bottom: 1.5rem; }
-  label { display: block; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
-  input, select, textarea {
-    width: 100%; padding: 0.75rem 1rem;
-    border: 1px solid var(--light); background: #fff; color: var(--ink);
-    font-family: 'DM Sans', sans-serif; font-size: 0.95rem;
-    border-radius: 2px; transition: border-color 0.2s; outline: none;
-  }
-  input:focus, select:focus, textarea:focus { border-color: var(--accent); }
-  textarea { resize: vertical; min-height: 90px; }
-  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-  .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
-  .divider { border: none; border-top: 1px solid var(--light); margin: 2rem 0; }
-  .generate-btn {
-    background: var(--accent); color: #fff; border: none; cursor: pointer;
-    padding: 0.9rem 2rem; font-family: 'DM Sans', sans-serif;
-    font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase;
-    font-weight: 500; width: 100%; transition: background 0.2s;
-  }
-  .generate-btn:hover:not(:disabled) { background: #1e3329; }
-  .generate-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-  .error-msg { color: #c0392b; font-size: 0.85rem; margin-top: 0.5rem; }
-  .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 2.5rem 0 0; }
-  .metric { background: var(--accent); padding: 1.5rem; }
-  .metric-val { font-family: 'DM Serif Display', serif; font-size: 2.25rem; color: #fff; line-height: 1; }
-  .metric-label { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.55); margin-top: 0.35rem; }
-  .output-card { margin-top: 1.5rem; border: 1px solid var(--light); background: #fff; }
-  .output-section { padding: 1.5rem; border-bottom: 1px solid var(--light); }
-  .output-section:last-child { border-bottom: none; }
-  .output-section-label { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--warm); font-weight: 500; margin-bottom: 0.75rem; }
-  .output-section-content { font-size: 0.95rem; color: var(--ink); line-height: 1.8; white-space: pre-wrap; }
-  .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 8px; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .copy-row { display: flex; justify-content: flex-end; padding: 1rem 1.5rem 0; }
-  .copy-btn { background: none; border: 1px solid var(--light); color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.4rem 1rem; cursor: pointer; transition: border-color 0.2s; }
-  .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
-  @media(max-width:640px) { nav { padding: 1rem 1.5rem; } .row, .row3 { grid-template-columns: 1fr; } .metrics { grid-template-columns: 1fr; } }
+  :root { --ink:#1a1814;--paper:#f5f2eb;--warm:#c8a96e;--muted:#7a7469;--light:#e8e3d8;--accent:#2d4a3e; }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:16px;line-height:1.7;}
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.25rem 3rem;background:rgba(245,242,235,0.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--light);}
+  .nav-logo{font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--ink);text-decoration:none;}
+  .nav-back{font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:.5rem;transition:color .2s;}
+  .nav-back:hover{color:var(--ink);}
+  .nav-back::before{content:'←';}
+  main{max-width:900px;margin:0 auto;padding:7rem 2rem 5rem;}
+  .page-eyebrow{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--warm);font-weight:500;display:flex;align-items:center;gap:.75rem;margin-bottom:1rem;}
+  .page-eyebrow::before{content:'';display:block;width:24px;height:1px;background:var(--warm);}
+  h1{font-family:'DM Serif Display',serif;font-size:clamp(2rem,4vw,2.75rem);margin-bottom:.75rem;line-height:1.15;}
+  .page-desc{color:var(--muted);font-size:1rem;margin-bottom:2rem;max-width:620px;}
+  .progress-bar{display:flex;margin-bottom:2.5rem;border:1px solid var(--light);overflow:hidden;}
+  .progress-step{flex:1;padding:.75rem .5rem;text-align:center;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;font-weight:500;color:var(--muted);background:#fff;border-right:1px solid var(--light);cursor:pointer;transition:all .2s;}
+  .progress-step:last-child{border-right:none;}
+  .progress-step.active{background:var(--accent);color:#fff;}
+  .progress-step.done{background:var(--light);color:var(--accent);}
+  .step-panel{display:none;}
+  .step-panel.active{display:block;}
+  .step-title{font-family:'DM Serif Display',serif;font-size:1.5rem;margin-bottom:.4rem;}
+  .step-subtitle{color:var(--muted);font-size:.9rem;margin-bottom:1.75rem;}
+  .form-section{margin-bottom:1.25rem;}
+  label{display:block;font-size:.78rem;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;}
+  input,select,textarea{width:100%;padding:.75rem 1rem;border:1px solid var(--light);background:#fff;color:var(--ink);font-family:'DM Sans',sans-serif;font-size:.95rem;border-radius:2px;transition:border-color .2s;outline:none;}
+  input:focus,select:focus,textarea:focus{border-color:var(--accent);}
+  textarea{resize:vertical;min-height:80px;}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+  .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;}
+  .swot-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem;}
+  .swot-card{border:1px solid var(--light);background:#fff;padding:1rem;}
+  .swot-card-label{font-size:.7rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem;}
+  .swot-s{color:#27ae60;} .swot-w{color:#e67e22;} .swot-o{color:#2980b9;} .swot-t{color:#c0392b;}
+  .swot-card textarea{border:none;padding:0;font-size:.88rem;min-height:80px;background:transparent;}
+  .swot-card textarea:focus{outline:none;}
+  .step-nav{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--light);}
+  .btn-next{background:var(--accent);color:#fff;border:none;cursor:pointer;padding:.85rem 2rem;font-family:'DM Sans',sans-serif;font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;font-weight:500;transition:background .2s;}
+  .btn-next:hover{background:#1e3329;}
+  .btn-back{background:none;border:1px solid var(--light);color:var(--muted);cursor:pointer;padding:.85rem 1.5rem;font-family:'DM Sans',sans-serif;font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;transition:all .2s;}
+  .btn-back:hover{border-color:var(--ink);color:var(--ink);}
+  .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin:2rem 0;}
+  .metric{background:var(--accent);padding:1.25rem;}
+  .metric-val{font-family:'DM Serif Display',serif;font-size:1.9rem;color:#fff;line-height:1;}
+  .metric-label{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-top:.35rem;}
+  .output-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem;}
+  .output-title{font-family:'DM Serif Display',serif;font-size:1.5rem;}
+  .output-actions{display:flex;gap:.75rem;}
+  .btn-action{background:none;border:1px solid var(--light);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;padding:.5rem 1.25rem;cursor:pointer;transition:all .2s;}
+  .btn-action:hover{border-color:var(--accent);color:var(--accent);}
+  .five-case-tabs{display:flex;border-bottom:1px solid var(--light);overflow-x:auto;}
+  .case-tab{padding:.75rem 1.25rem;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;}
+  .case-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+  .case-panel{display:none;background:#fff;border:1px solid var(--light);border-top:none;padding:1.75rem;}
+  .case-panel.active{display:block;}
+  .output-section{margin-bottom:1.5rem;}
+  .output-section-label{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--warm);font-weight:500;margin-bottom:.6rem;}
+  .output-section-content{font-size:.95rem;color:var(--ink);line-height:1.8;white-space:pre-wrap;}
+  .swot-output-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--light);margin-top:.5rem;}
+  .swot-output-cell{background:#fff;padding:1rem;}
+  .swot-output-cell h4{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;font-weight:500;margin-bottom:.5rem;}
+  .swot-output-cell p{font-size:.88rem;color:var(--muted);line-height:1.7;white-space:pre-wrap;}
+  .risk-table{width:100%;border-collapse:collapse;font-size:.88rem;margin-top:.5rem;}
+  .risk-table th{background:var(--accent);color:#fff;padding:.6rem .75rem;text-align:left;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;font-weight:500;}
+  .risk-table td{padding:.65rem .75rem;border-bottom:1px solid var(--light);color:var(--ink);vertical-align:top;}
+  .risk-table tr:last-child td{border-bottom:none;}
+  .risk-high{color:#c0392b;font-weight:500;} .risk-medium{color:#e67e22;font-weight:500;} .risk-low{color:#27ae60;font-weight:500;}
+  .spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:8px;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .generating-state{text-align:center;padding:4rem 2rem;}
+  .generating-state h3{font-family:'DM Serif Display',serif;font-size:1.5rem;margin-bottom:.5rem;}
+  .generating-state p{color:var(--muted);font-size:.9rem;}
+  .progress-dots{display:flex;gap:6px;justify-content:center;margin-top:1.5rem;}
+  .progress-dot{width:8px;height:8px;border-radius:50%;background:var(--light);animation:pulse 1.4s ease-in-out infinite;}
+  .progress-dot:nth-child(2){animation-delay:.2s;} .progress-dot:nth-child(3){animation-delay:.4s;}
+  @keyframes pulse{0%,80%,100%{background:var(--light);}40%{background:var(--accent);}}
+  .error-msg{color:#c0392b;font-size:.85rem;margin-top:.5rem;}
+  @media(max-width:640px){nav{padding:1rem 1.5rem;}.row,.row3,.swot-grid{grid-template-columns:1fr;}.metrics{grid-template-columns:1fr 1fr;}.swot-output-grid{grid-template-columns:1fr;}}
+  @media print{nav,.progress-bar,.step-nav,.output-actions,.five-case-tabs{display:none!important;}.case-panel{display:block!important;border:none;padding:1rem 0;}main{padding:1rem;}}
 </style>
 </head>
 <body>
@@ -71,163 +92,223 @@
   <a href="index.html" class="nav-logo">Ritisha Singh</a>
   <a href="index.html" class="nav-back">Back to portfolio</a>
 </nav>
-
 <main>
   <div class="page-eyebrow">Portfolio project · 01</div>
   <h1>Business Case Generator</h1>
-  <p class="page-desc">Fill in the details below and generate a full, structured business case with ROI metrics, risk analysis, and executive summary — ready to present to stakeholders.</p>
+  <p class="page-desc">Answer a few questions and receive a boardroom-ready business case built on the Five Case Model — structured, evidence-based, and ready to present.</p>
 
-  <div class="form-section">
-    <label>Project / initiative name</label>
-    <input type="text" id="projectName" placeholder="e.g. Automate employee onboarding process" />
+  <div class="progress-bar" id="progressBar">
+    <div class="progress-step active" onclick="goToStep(0)">1. Project</div>
+    <div class="progress-step" onclick="goToStep(1)">2. Strategic</div>
+    <div class="progress-step" onclick="goToStep(2)">3. Financial</div>
+    <div class="progress-step" onclick="goToStep(3)">4. SWOT</div>
+    <div class="progress-step" onclick="goToStep(4)">5. Risk</div>
+    <div class="progress-step" onclick="goToStep(5)">6. Output</div>
   </div>
-  <div class="form-section">
-    <label>Problem statement</label>
-    <textarea id="problem" placeholder="Describe the current pain point or gap this initiative addresses..."></textarea>
-  </div>
-  <div class="form-section">
-    <label>Proposed solution</label>
-    <textarea id="solution" placeholder="Briefly describe what you're proposing to do..."></textarea>
-  </div>
-  <div class="row form-section">
-    <div>
-      <label>Industry / department</label>
-      <select id="industry">
-        <option value="">Select...</option>
-        <option>HR & People Operations</option>
-        <option>Finance & Accounting</option>
-        <option>Sales & Revenue</option>
-        <option>IT & Digital</option>
-        <option>Supply Chain & Logistics</option>
-        <option>Customer Experience</option>
-        <option>Operations & Process</option>
-        <option>Marketing</option>
-      </select>
+
+  <div class="step-panel active" id="step-0">
+    <div class="step-title">Project overview</div>
+    <div class="step-subtitle">Start with the basics — what are you proposing and why?</div>
+    <div class="form-section"><label>Project / initiative name *</label><input type="text" id="projectName" placeholder="e.g. Digital onboarding automation for post-merger integration" /></div>
+    <div class="form-section"><label>Problem statement *</label><textarea id="problem" placeholder="What pain point or gap does this initiative address?..."></textarea></div>
+    <div class="form-section"><label>Proposed solution *</label><textarea id="solution" placeholder="Describe what you're proposing to do and how it addresses the problem..."></textarea></div>
+    <div class="row form-section">
+      <div><label>Industry / department</label>
+        <select id="industry"><option value="">Select...</option><option>HR & People Operations</option><option>Finance & Accounting</option><option>Sales & Revenue</option><option>IT & Digital</option><option>Supply Chain & Logistics</option><option>Customer Experience</option><option>Operations & Process</option><option>Marketing</option></select>
+      </div>
+      <div><label>Organisation size</label>
+        <select id="orgSize"><option value="">Select...</option><option>Small (1–50 employees)</option><option>Mid-size (50–500)</option><option>Large (500–5,000)</option><option>Enterprise (5,000+)</option></select>
+      </div>
     </div>
-    <div>
-      <label>Organisation size</label>
-      <select id="orgSize">
-        <option value="">Select...</option>
-        <option>Small (1–50 employees)</option>
-        <option>Mid-size (50–500)</option>
-        <option>Large (500–5,000)</option>
-        <option>Enterprise (5,000+)</option>
-      </select>
+    <div class="form-section"><label>Target audience / beneficiaries</label><input type="text" id="targetAudience" placeholder="e.g. HR teams, new employees, line managers across 3 regions" /></div>
+    <div class="step-nav"><div></div><button class="btn-next" onclick="nextStep(0)">Next: Strategic case →</button></div>
+  </div>
+
+  <div class="step-panel" id="step-1">
+    <div class="step-title">Strategic case</div>
+    <div class="step-subtitle">How does this initiative align to organisational strategy?</div>
+    <div class="form-section"><label>Strategic objectives this supports</label><textarea id="strategicObjectives" placeholder="e.g. People Strategy 2025, digital transformation roadmap, operational efficiency targets..."></textarea></div>
+    <div class="form-section"><label>Key stakeholders</label><input type="text" id="stakeholders" placeholder="e.g. HR Director, CTO, Finance Controller, Regional Managers" /></div>
+    <div class="form-section"><label>Success metrics / KPIs</label><textarea id="kpis" placeholder="e.g. Reduce onboarding time from 3 weeks to 5 days, 90% system access on day 1..." style="min-height:72px"></textarea></div>
+    <div class="form-section"><label>Competitor / market context</label><textarea id="competitorContext" placeholder="How are competitors approaching this? What is the market benchmark?..." style="min-height:72px"></textarea></div>
+    <div class="step-nav"><button class="btn-back" onclick="prevStep(1)">← Back</button><button class="btn-next" onclick="nextStep(1)">Next: Financial case →</button></div>
+  </div>
+
+  <div class="step-panel" id="step-2">
+    <div class="step-title">Financial case</div>
+    <div class="step-subtitle">Provide the numbers that underpin the business case.</div>
+    <div class="row3 form-section">
+      <div><label>Total project cost (€)</label><input type="number" id="cost" placeholder="35000" /></div>
+      <div><label>Expected annual benefit (€)</label><input type="number" id="benefit" placeholder="90000" /></div>
+      <div><label>Timeline (months)</label><input type="number" id="timeline" placeholder="4" /></div>
     </div>
-  </div>
-  <div class="row3 form-section">
-    <div><label>Est. project cost (€)</label><input type="number" id="cost" placeholder="50000" /></div>
-    <div><label>Expected annual benefit (€)</label><input type="number" id="benefit" placeholder="120000" /></div>
-    <div><label>Timeline (months)</label><input type="number" id="timeline" placeholder="6" /></div>
-  </div>
-  <div class="form-section">
-    <label>Key stakeholders</label>
-    <input type="text" id="stakeholders" placeholder="e.g. HR Director, CTO, Finance Lead" />
-  </div>
-  <div class="form-section">
-    <label>Risks or constraints (optional)</label>
-    <textarea id="risks" placeholder="Any known risks, dependencies, or constraints..." style="min-height:64px"></textarea>
+    <div class="form-section"><label>Cost breakdown</label><textarea id="costBreakdown" placeholder="e.g. Software licences: €15,000 / Implementation: €12,000 / Training: €5,000 / Contingency: €3,000" style="min-height:72px"></textarea></div>
+    <div class="form-section"><label>Expected benefits breakdown</label><textarea id="benefitBreakdown" placeholder="e.g. Productivity gain: €40,000 / Reduced agency fees: €30,000 / Risk reduction: €20,000" style="min-height:72px"></textarea></div>
+    <div class="form-section"><label>Funding source</label><input type="text" id="fundingSource" placeholder="e.g. HR transformation budget, IT capital expenditure" /></div>
+    <div class="step-nav"><button class="btn-back" onclick="prevStep(2)">← Back</button><button class="btn-next" onclick="nextStep(2)">Next: SWOT analysis →</button></div>
   </div>
 
-  <hr class="divider" />
-  <button class="generate-btn" id="generateBtn" onclick="generate()">Generate business case</button>
-  <div class="error-msg" id="errorMsg"></div>
+  <div class="step-panel" id="step-3">
+    <div class="step-title">SWOT analysis</div>
+    <div class="step-subtitle">Assess the internal and external factors that will influence this initiative.</div>
+    <div class="swot-grid">
+      <div class="swot-card"><div class="swot-card-label swot-s">Strengths</div><textarea id="swotS" placeholder="Internal advantages and capabilities..."></textarea></div>
+      <div class="swot-card"><div class="swot-card-label swot-w">Weaknesses</div><textarea id="swotW" placeholder="Internal limitations or constraints..."></textarea></div>
+      <div class="swot-card"><div class="swot-card-label swot-o">Opportunities</div><textarea id="swotO" placeholder="External factors that make this timely..."></textarea></div>
+      <div class="swot-card"><div class="swot-card-label swot-t">Threats</div><textarea id="swotT" placeholder="External risks or competitive pressures..."></textarea></div>
+    </div>
+    <div class="step-nav"><button class="btn-back" onclick="prevStep(3)">← Back</button><button class="btn-next" onclick="nextStep(3)">Next: Risk register →</button></div>
+  </div>
 
-  <div id="outputArea" style="display:none">
-    <div class="metrics" id="metricsArea"></div>
-    <div class="copy-row"><button class="copy-btn" onclick="copyOutput()">Copy to clipboard</button></div>
-    <div class="output-card" id="outputContent"></div>
+  <div class="step-panel" id="step-4">
+    <div class="step-title">Risk & governance</div>
+    <div class="step-subtitle">Identify key risks and how you plan to manage delivery.</div>
+    <div class="form-section"><label>Key risks and constraints</label><textarea id="risks" placeholder="List main risks e.g.&#10;- Legacy system integration complexity&#10;- Change resistance from teams&#10;- Data migration across geographies" style="min-height:120px"></textarea></div>
+    <div class="form-section"><label>Management / governance approach</label><textarea id="governance" placeholder="Who oversees delivery? Steering committee, project methodology, reporting cadence..." style="min-height:80px"></textarea></div>
+    <div class="form-section"><label>Procurement / commercial approach</label><textarea id="procurement" placeholder="How will suppliers be selected? Open tender, preferred supplier, in-house..." style="min-height:72px"></textarea></div>
+    <div class="step-nav"><button class="btn-back" onclick="prevStep(4)">← Back</button><button class="btn-next" onclick="generateCase()">Generate business case →</button></div>
+  </div>
+
+  <div class="step-panel" id="step-5">
+    <div id="generatingState" class="generating-state">
+      <h3>Building your business case...</h3>
+      <p>Applying the Five Case Model and generating boardroom-ready content</p>
+      <div class="progress-dots"><div class="progress-dot"></div><div class="progress-dot"></div><div class="progress-dot"></div></div>
+    </div>
+    <div id="outputArea" style="display:none">
+      <div class="output-header">
+        <div class="output-title" id="outputProjectName"></div>
+        <div class="output-actions">
+          <button class="btn-action" onclick="copyOutput()">Copy text</button>
+          <button class="btn-action" onclick="window.print()">Print / Save PDF</button>
+          <button class="btn-action" onclick="startOver()">Start over</button>
+        </div>
+      </div>
+      <div class="metrics" id="metricsArea"></div>
+      <div class="five-case-tabs">
+        <div class="case-tab active" onclick="showTab('executive',this)">Executive Summary</div>
+        <div class="case-tab" onclick="showTab('strategic',this)">Strategic Case</div>
+        <div class="case-tab" onclick="showTab('economic',this)">Economic Case</div>
+        <div class="case-tab" onclick="showTab('commercial',this)">Commercial Case</div>
+        <div class="case-tab" onclick="showTab('financial',this)">Financial Case</div>
+        <div class="case-tab" onclick="showTab('management',this)">Management Case</div>
+      </div>
+      <div class="case-panel active" id="panel-executive">
+        <div class="output-section"><div class="output-section-label">Executive Summary</div><div class="output-section-content" id="out-executive"></div></div>
+        <div class="output-section"><div class="output-section-label">SWOT Analysis</div>
+          <div class="swot-output-grid">
+            <div class="swot-output-cell"><h4 class="swot-s">Strengths</h4><p id="out-swot-s"></p></div>
+            <div class="swot-output-cell"><h4 class="swot-w">Weaknesses</h4><p id="out-swot-w"></p></div>
+            <div class="swot-output-cell"><h4 class="swot-o">Opportunities</h4><p id="out-swot-o"></p></div>
+            <div class="swot-output-cell"><h4 class="swot-t">Threats</h4><p id="out-swot-t"></p></div>
+          </div>
+        </div>
+      </div>
+      <div class="case-panel" id="panel-strategic"><div class="output-section"><div class="output-section-label">Strategic Case</div><div class="output-section-content" id="out-strategic"></div></div></div>
+      <div class="case-panel" id="panel-economic"><div class="output-section"><div class="output-section-label">Economic Case</div><div class="output-section-content" id="out-economic"></div></div></div>
+      <div class="case-panel" id="panel-commercial"><div class="output-section"><div class="output-section-label">Commercial Case</div><div class="output-section-content" id="out-commercial"></div></div></div>
+      <div class="case-panel" id="panel-financial"><div class="output-section"><div class="output-section-label">Financial Case</div><div class="output-section-content" id="out-financial"></div></div></div>
+      <div class="case-panel" id="panel-management">
+        <div class="output-section"><div class="output-section-label">Management Case</div><div class="output-section-content" id="out-management"></div></div>
+        <div class="output-section"><div class="output-section-label">Risk Register</div>
+          <table class="risk-table"><thead><tr><th>Risk</th><th>Likelihood</th><th>Impact</th><th>Mitigation</th></tr></thead><tbody id="riskTableBody"></tbody></table>
+        </div>
+      </div>
+    </div>
+    <div class="error-msg" id="errorMsg"></div>
   </div>
 </main>
 
 <script>
-async function generate() {
-  const btn = document.getElementById('generateBtn');
-  const errorMsg = document.getElementById('errorMsg');
-  errorMsg.textContent = '';
-  const projectName = document.getElementById('projectName').value.trim();
-  const problem = document.getElementById('problem').value.trim();
-  const solution = document.getElementById('solution').value.trim();
-  if (!projectName || !problem || !solution) {
-    errorMsg.textContent = 'Please fill in project name, problem statement, and proposed solution.';
-    return;
-  }
-  const cost = parseFloat(document.getElementById('cost').value) || 0;
-  const benefit = parseFloat(document.getElementById('benefit').value) || 0;
-  const timeline = parseFloat(document.getElementById('timeline').value) || 12;
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span>Generating your business case...';
-  if (cost > 0 && benefit > 0) {
-    const roi = Math.round(((benefit - cost) / cost) * 100);
-    const payback = (cost / (benefit / 12)).toFixed(1);
-    const npv = benefit - cost;
-    document.getElementById('metricsArea').innerHTML = `
-      <div class="metric"><div class="metric-val">${roi}%</div><div class="metric-label">Return on investment</div></div>
-      <div class="metric"><div class="metric-val">${payback} mo</div><div class="metric-label">Payback period</div></div>
-      <div class="metric"><div class="metric-val">€${Math.abs(Math.round(npv)).toLocaleString()}</div><div class="metric-label">${npv >= 0 ? 'Net gain' : 'Net cost'}</div></div>
-    `;
-  }
-  const prompt = `You are a senior business analyst. Generate a structured, professional business case based on the following:
+let currentStep=0;
+function updateProgress(s){document.querySelectorAll('.progress-step').forEach((el,i)=>{el.classList.remove('active','done');if(i===s)el.classList.add('active');else if(i<s)el.classList.add('done');});}
+function showStep(s){document.querySelectorAll('.step-panel').forEach(p=>p.classList.remove('active'));document.getElementById('step-'+s).classList.add('active');updateProgress(s);currentStep=s;window.scrollTo({top:0,behavior:'smooth'});}
+function goToStep(s){if(s<=currentStep)showStep(s);}
+function prevStep(s){showStep(s-1);}
+function nextStep(s){if(s===0&&(!document.getElementById('projectName').value.trim()||!document.getElementById('problem').value.trim()||!document.getElementById('solution').value.trim())){alert('Please fill in project name, problem statement, and proposed solution.');return;}showStep(s+1);}
+function showTab(tab,el){document.querySelectorAll('.case-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.case-panel').forEach(p=>p.classList.remove('active'));document.getElementById('panel-'+tab).classList.add('active');el.classList.add('active');}
+function calcMetrics(){const c=parseFloat(document.getElementById('cost').value)||0,b=parseFloat(document.getElementById('benefit').value)||0,t=parseFloat(document.getElementById('timeline').value)||12;if(c>0&&b>0){const roi=Math.round(((b-c)/c)*100),pb=(c/(b/12)).toFixed(1),npv=b-c;document.getElementById('metricsArea').innerHTML=`<div class="metric"><div class="metric-val">${roi}%</div><div class="metric-label">ROI</div></div><div class="metric"><div class="metric-val">${pb} mo</div><div class="metric-label">Payback period</div></div><div class="metric"><div class="metric-val">€${Math.abs(Math.round(npv)).toLocaleString()}</div><div class="metric-label">${npv>=0?'Net gain':'Net cost'}</div></div><div class="metric"><div class="metric-val">${t} mo</div><div class="metric-label">Timeline</div></div>`;}}
+function extractSection(text,marker){const start=text.indexOf('##'+marker+'##');if(start===-1)return'';const cs=start+marker.length+4;const nm=text.indexOf('##',cs);return(nm===-1?text.slice(cs):text.slice(cs,nm)).trim();}
+async function generateCase(){
+  showStep(5);
+  document.getElementById('generatingState').style.display='block';
+  document.getElementById('outputArea').style.display='none';
+  document.getElementById('errorMsg').textContent='';
+  const d={project:document.getElementById('projectName').value,problem:document.getElementById('problem').value,solution:document.getElementById('solution').value,industry:document.getElementById('industry').value,orgSize:document.getElementById('orgSize').value,targetAudience:document.getElementById('targetAudience').value,strategicObjectives:document.getElementById('strategicObjectives').value,stakeholders:document.getElementById('stakeholders').value,kpis:document.getElementById('kpis').value,competitorContext:document.getElementById('competitorContext').value,cost:document.getElementById('cost').value,benefit:document.getElementById('benefit').value,timeline:document.getElementById('timeline').value,costBreakdown:document.getElementById('costBreakdown').value,benefitBreakdown:document.getElementById('benefitBreakdown').value,fundingSource:document.getElementById('fundingSource').value,swotS:document.getElementById('swotS').value,swotW:document.getElementById('swotW').value,swotO:document.getElementById('swotO').value,swotT:document.getElementById('swotT').value,risks:document.getElementById('risks').value,governance:document.getElementById('governance').value,procurement:document.getElementById('procurement').value};
+  const prompt=`You are a senior business analyst. Generate a comprehensive boardroom-ready business case using the Five Case Model.
 
-Project: ${projectName}
-Industry: ${document.getElementById('industry').value || 'Not specified'}
-Org size: ${document.getElementById('orgSize').value || 'Not specified'}
-Problem: ${problem}
-Solution: ${solution}
-Cost: ${cost ? '€' + cost.toLocaleString() : 'Not provided'}
-Annual benefit: ${benefit ? '€' + benefit.toLocaleString() : 'Not provided'}
-Timeline: ${timeline} months
-Stakeholders: ${document.getElementById('stakeholders').value || 'Not specified'}
-Risks: ${document.getElementById('risks').value || 'None'}
+PROJECT: ${d.project}
+Industry: ${d.industry||'Not specified'} | Org size: ${d.orgSize||'Not specified'} | Target audience: ${d.targetAudience||'Not specified'}
+Problem: ${d.problem}
+Solution: ${d.solution}
+Strategic objectives: ${d.strategicObjectives||'Not specified'}
+Stakeholders: ${d.stakeholders||'Not specified'}
+KPIs: ${d.kpis||'Not specified'}
+Competitor context: ${d.competitorContext||'Not specified'}
+Cost: ${d.cost?'€'+Number(d.cost).toLocaleString():'Not provided'} | Annual benefit: ${d.benefit?'€'+Number(d.benefit).toLocaleString():'Not provided'} | Timeline: ${d.timeline?d.timeline+' months':'Not specified'}
+Cost breakdown: ${d.costBreakdown||'Not provided'}
+Benefits breakdown: ${d.benefitBreakdown||'Not provided'}
+Funding: ${d.fundingSource||'Not specified'}
+Strengths: ${d.swotS||'Not provided'} | Weaknesses: ${d.swotW||'Not provided'} | Opportunities: ${d.swotO||'Not provided'} | Threats: ${d.swotT||'Not provided'}
+Risks: ${d.risks||'Not provided'}
+Governance: ${d.governance||'Not provided'}
+Procurement: ${d.procurement||'Not provided'}
 
-Write a professional business case with these exact section headings (each on its own line):
-EXECUTIVE SUMMARY
-PROBLEM STATEMENT
-PROPOSED SOLUTION
-BUSINESS BENEFITS
-IMPLEMENTATION APPROACH
-RISK ANALYSIS
-RECOMMENDATION
+Use EXACTLY these markers on their own lines:
 
-Keep tone professional, concise, and action-oriented. No jargon.`;
-  try {
-    const res = await fetch('/.netlify/functions/claude-proxy', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, messages: [{ role: 'user', content: prompt }] })
-    });
-    const data = await res.json();
-    if (data.error) throw new Error(data.error.message);
-    const text = data.content.map(b => b.text || '').join('');
-    const sectionNames = ['EXECUTIVE SUMMARY','PROBLEM STATEMENT','PROPOSED SOLUTION','BUSINESS BENEFITS','IMPLEMENTATION APPROACH','RISK ANALYSIS','RECOMMENDATION'];
-    let html = '';
-    const parts = text.split(/\n(?=EXECUTIVE SUMMARY|PROBLEM STATEMENT|PROPOSED SOLUTION|BUSINESS BENEFITS|IMPLEMENTATION APPROACH|RISK ANALYSIS|RECOMMENDATION)/);
-    for (const part of parts) {
-      const lines = part.trim().split('\n');
-      const heading = lines[0].trim();
-      const body = lines.slice(1).join('\n').trim();
-      if (!body) continue;
-      html += `<div class="output-section"><div class="output-section-label">${heading}</div><div class="output-section-content">${body}</div></div>`;
-    }
-    if (!html) html = `<div class="output-section"><div class="output-section-content">${text}</div></div>`;
-    document.getElementById('outputContent').innerHTML = html;
-    document.getElementById('outputArea').style.display = 'block';
-    document.getElementById('outputArea').scrollIntoView({ behavior: 'smooth' });
-  } catch(e) {
-    errorMsg.textContent = 'Something went wrong. Please try again.';
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = 'Regenerate business case';
+##EXECUTIVE_SUMMARY##
+(2-3 paragraphs: problem, solution, financials, recommendation)
+
+##STRATEGIC_CASE##
+(Strategic context, business need, alignment, options considered, target audience impact)
+
+##ECONOMIC_CASE##
+(Value for money, options appraisal, cost-benefit, non-financial benefits, market context)
+
+##COMMERCIAL_CASE##
+(Procurement approach, supplier considerations, commercial risks, contract strategy)
+
+##FINANCIAL_CASE##
+(Budget detail, funding, cash flow, financial risks, sensitivity analysis)
+
+##MANAGEMENT_CASE##
+(Governance, delivery approach, milestones, team structure, change management, benefits realisation)
+
+##RISK_REGISTER##
+(5 rows, pipe-separated: Risk Description|Likelihood (High/Medium/Low)|Impact (High/Medium/Low)|Mitigation Strategy)`;
+
+  try{
+    const res=await fetch('/.netlify/functions/claude-proxy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'gemini-2.0-flash',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
+    const result=await res.json();
+    if(result.error)throw new Error(result.error);
+    const text=result.content[0].text;
+    document.getElementById('out-executive').textContent=extractSection(text,'EXECUTIVE_SUMMARY');
+    document.getElementById('out-strategic').textContent=extractSection(text,'STRATEGIC_CASE');
+    document.getElementById('out-economic').textContent=extractSection(text,'ECONOMIC_CASE');
+    document.getElementById('out-commercial').textContent=extractSection(text,'COMMERCIAL_CASE');
+    document.getElementById('out-financial').textContent=extractSection(text,'FINANCIAL_CASE');
+    document.getElementById('out-management').textContent=extractSection(text,'MANAGEMENT_CASE');
+    document.getElementById('out-swot-s').textContent=d.swotS||'Not provided';
+    document.getElementById('out-swot-w').textContent=d.swotW||'Not provided';
+    document.getElementById('out-swot-o').textContent=d.swotO||'Not provided';
+    document.getElementById('out-swot-t').textContent=d.swotT||'Not provided';
+    const riskSection=extractSection(text,'RISK_REGISTER');
+    const riskRows=riskSection.split('\n').filter(r=>r.includes('|'));
+    const tbody=document.getElementById('riskTableBody');
+    tbody.innerHTML='';
+    riskRows.forEach(row=>{const cols=row.split('|').map(c=>c.trim());if(cols.length>=4){const tr=document.createElement('tr');const lc=cols[1].toLowerCase().includes('high')?'risk-high':cols[1].toLowerCase().includes('medium')?'risk-medium':'risk-low';const ic=cols[2].toLowerCase().includes('high')?'risk-high':cols[2].toLowerCase().includes('medium')?'risk-medium':'risk-low';tr.innerHTML=`<td>${cols[0]}</td><td class="${lc}">${cols[1]}</td><td class="${ic}">${cols[2]}</td><td>${cols[3]}</td>`;tbody.appendChild(tr);}});
+    document.getElementById('outputProjectName').textContent=d.project;
+    calcMetrics();
+    document.getElementById('generatingState').style.display='none';
+    document.getElementById('outputArea').style.display='block';
+  }catch(e){
+    document.getElementById('generatingState').style.display='none';
+    document.getElementById('errorMsg').textContent='Something went wrong. Please try again.';
+    console.error(e);
   }
 }
-function copyOutput() {
-  const text = document.getElementById('outputContent').innerText;
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = document.querySelector('.copy-btn');
-    btn.textContent = 'Copied!';
-    setTimeout(() => btn.textContent = 'Copy to clipboard', 2000);
-  });
-}
+function copyOutput(){const sections=['executive','strategic','economic','commercial','financial','management'];let text=document.getElementById('outputProjectName').textContent+'\n\n';sections.forEach(s=>{const el=document.getElementById('out-'+s);if(el)text+=s.toUpperCase()+'\n'+el.textContent+'\n\n';});navigator.clipboard.writeText(text).then(()=>{event.target.textContent='Copied!';setTimeout(()=>event.target.textContent='Copy text',2000);});}
+function startOver(){showStep(0);document.getElementById('outputArea').style.display='none';}
 </script>
 </body>
 </html>
