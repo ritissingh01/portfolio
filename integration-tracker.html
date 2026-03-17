@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Post-Merger Integration Tracker — Ritisha Singh</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#0d0f12;--surface:#151820;--surface2:#1c2030;--border:#252a38;--text:#e8eaf0;--muted:#6b7280;--accent:#4f8ef7;--warm:#f59e0b;--green:#10b981;--red:#ef4444;--amber:#f59e0b;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6;min-height:100vh;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1rem 2.5rem;background:rgba(13,15,18,0.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
+.nav-logo{font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;color:var(--text);text-decoration:none;letter-spacing:0.02em;}
+.nav-back{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:.5rem;transition:color .2s;}
+.nav-back:hover{color:var(--text);}
+.nav-back::before{content:'←';}
+main{max-width:1100px;margin:0 auto;padding:6rem 2rem 4rem;}
+.page-header{margin-bottom:2.5rem;}
+.eyebrow{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:500;margin-bottom:.75rem;}
+h1{font-family:'Syne',sans-serif;font-size:clamp(1.75rem,3vw,2.5rem);font-weight:700;line-height:1.15;margin-bottom:.5rem;}
+.page-desc{color:var(--muted);font-size:.95rem;max-width:580px;}
+
+/* SETUP PANEL */
+.setup-card{background:var(--surface);border:1px solid var(--border);padding:2rem;margin-bottom:2rem;}
+.setup-title{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:600;margin-bottom:1.25rem;display:flex;align-items:center;gap:.75rem;}
+.setup-title::before{content:'';display:block;width:3px;height:18px;background:var(--accent);}
+.setup-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem;}
+.field label{display:block;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem;font-weight:500;}
+.field input,.field select{width:100%;padding:.65rem .9rem;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:'Inter',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s;}
+.field input:focus,.field select:focus{border-color:var(--accent);}
+.field select option{background:var(--surface2);}
+
+/* WORKSTREAMS */
+.workstreams-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem;margin-bottom:1.25rem;}
+.ws-item{display:flex;align-items:flex-start;gap:.75rem;padding:.9rem 1rem;background:var(--surface2);border:1px solid var(--border);cursor:pointer;transition:all .2s;}
+.ws-item:hover{border-color:var(--accent);}
+.ws-item.selected{border-color:var(--accent);background:rgba(79,142,247,0.08);}
+.ws-check{width:16px;height:16px;border:1px solid var(--border);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.ws-item.selected .ws-check{background:var(--accent);border-color:var(--accent);}
+.ws-check-inner{width:8px;height:8px;background:#fff;display:none;}
+.ws-item.selected .ws-check-inner{display:block;}
+.ws-name{font-size:.88rem;font-weight:500;color:var(--text);}
+.ws-desc{font-size:.75rem;color:var(--muted);margin-top:2px;}
+
+.btn-primary{background:var(--accent);color:#fff;border:none;cursor:pointer;padding:.8rem 2rem;font-family:'Syne',sans-serif;font-size:.82rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;transition:opacity .2s;}
+.btn-primary:hover{opacity:.85;}
+.btn-primary:disabled{opacity:.4;cursor:not-allowed;}
+.btn-outline{background:none;border:1px solid var(--border);color:var(--muted);cursor:pointer;padding:.7rem 1.5rem;font-family:'Inter',sans-serif;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;transition:all .2s;}
+.btn-outline:hover{border-color:var(--text);color:var(--text);}
+
+/* DASHBOARD */
+#dashboard{display:none;}
+.summary-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem;}
+.summary-card{background:var(--surface);border:1px solid var(--border);padding:1.25rem;}
+.summary-val{font-family:'Syne',sans-serif;font-size:2rem;font-weight:700;line-height:1;}
+.summary-label{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:.3rem;}
+.summary-card.green .summary-val{color:var(--green);}
+.summary-card.amber .summary-val{color:var(--amber);}
+.summary-card.red .summary-val{color:var(--red);}
+.summary-card.blue .summary-val{color:var(--accent);}
+
+.section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;}
+.section-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;display:flex;align-items:center;gap:.6rem;}
+.section-title::before{content:'';display:block;width:3px;height:14px;background:var(--accent);}
+
+/* WORKSTREAM CARDS */
+.ws-cards{display:grid;gap:1rem;margin-bottom:2rem;}
+.ws-card{background:var(--surface);border:1px solid var(--border);padding:1.5rem;transition:border-color .2s;}
+.ws-card:hover{border-color:var(--border);}
+.ws-card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem;}
+.ws-card-title{font-family:'Syne',sans-serif;font-size:1rem;font-weight:600;}
+.ws-card-meta{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;}
+.rag{font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:.25rem .65rem;}
+.rag-green{background:rgba(16,185,129,.15);color:var(--green);border:1px solid rgba(16,185,129,.3);}
+.rag-amber{background:rgba(245,158,11,.15);color:var(--amber);border:1px solid rgba(245,158,11,.3);}
+.rag-red{background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.3);}
+.progress-row{display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem;}
+.progress-track{flex:1;height:4px;background:var(--border);}
+.progress-fill{height:100%;background:var(--accent);transition:width .4s;}
+.progress-fill.green{background:var(--green);}
+.progress-fill.amber{background:var(--amber);}
+.progress-fill.red{background:var(--red);}
+.progress-pct{font-size:.82rem;font-weight:500;color:var(--text);min-width:36px;text-align:right;}
+.ws-controls{display:grid;grid-template-columns:1fr 1fr auto auto;gap:.75rem;align-items:end;margin-bottom:.75rem;}
+.ws-controls .field label{font-size:.68rem;}
+.ws-controls select,.ws-controls input[type=number]{padding:.5rem .7rem;font-size:.82rem;}
+.milestones{margin-top:.75rem;}
+.milestone-row{display:flex;gap:.5rem;align-items:center;margin-bottom:.4rem;}
+.milestone-check{width:14px;height:14px;border:1px solid var(--border);flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.milestone-check.done{background:var(--green);border-color:var(--green);}
+.milestone-text{font-size:.82rem;color:var(--muted);}
+.milestone-text.done{text-decoration:line-through;color:var(--muted);opacity:.6;}
+.add-milestone{display:flex;gap:.5rem;margin-top:.5rem;}
+.add-milestone input{flex:1;padding:.45rem .75rem;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:'Inter',sans-serif;font-size:.82rem;outline:none;}
+.add-milestone input:focus{border-color:var(--accent);}
+.add-milestone button{padding:.45rem .9rem;background:var(--surface2);border:1px solid var(--border);color:var(--muted);cursor:pointer;font-size:.8rem;transition:all .2s;}
+.add-milestone button:hover{border-color:var(--accent);color:var(--accent);}
+
+/* RISKS */
+.risks-table{width:100%;border-collapse:collapse;margin-bottom:2rem;}
+.risks-table th{background:var(--surface2);padding:.65rem .9rem;text-align:left;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;border-bottom:1px solid var(--border);}
+.risks-table td{padding:.65rem .9rem;border-bottom:1px solid var(--border);font-size:.85rem;vertical-align:top;}
+.risks-table tr:last-child td{border-bottom:none;}
+.add-risk-row{display:grid;grid-template-columns:2fr 1fr 1fr 2fr auto;gap:.5rem;margin-bottom:2rem;align-items:end;}
+.add-risk-row .field label{font-size:.68rem;}
+.add-risk-row input,.add-risk-row select{padding:.5rem .7rem;font-size:.82rem;}
+
+/* AI PANEL */
+.ai-panel{background:var(--surface);border:1px solid var(--border);padding:1.5rem;margin-bottom:2rem;}
+.ai-title{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:600;margin-bottom:.75rem;display:flex;align-items:center;gap:.6rem;}
+.ai-title::before{content:'';display:block;width:3px;height:14px;background:var(--accent);}
+.ai-output{font-size:.88rem;color:var(--text);line-height:1.8;white-space:pre-wrap;margin-top:.75rem;}
+.ai-actions{display:flex;gap:.75rem;flex-wrap:wrap;}
+.spinner{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.dots{display:flex;gap:5px;margin-top:1rem;}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--border);animation:dp 1.4s ease-in-out infinite;}
+.dot:nth-child(2){animation-delay:.2s;}.dot:nth-child(3){animation-delay:.4s;}
+@keyframes dp{0%,80%,100%{background:var(--border);}40%{background:var(--accent);}}
+
+/* EXPORT */
+.export-row{display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:2rem;}
+
+@media(max-width:700px){
+  .setup-grid,.workstreams-grid,.summary-bar{grid-template-columns:1fr;}
+  .ws-controls{grid-template-columns:1fr 1fr;}
+  .add-risk-row{grid-template-columns:1fr 1fr;}
+  nav{padding:1rem 1.5rem;}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">Ritisha Singh</a>
+  <a href="index.html" class="nav-back">Back to portfolio</a>
+</nav>
+
+<main>
+  <div class="page-header">
+    <div class="eyebrow">Portfolio project · 02</div>
+    <h1>Post-Merger Integration Tracker</h1>
+    <p class="page-desc">Track integration workstreams, milestones, and risks across a merger — with AI-generated recommendations for each workstream.</p>
+  </div>
+
+  <!-- SETUP -->
+  <div id="setupPanel">
+    <div class="setup-card">
+      <div class="setup-title">Merger details</div>
+      <div class="setup-grid">
+        <div class="field"><label>Acquiring company</label><input type="text" id="companyA" placeholder="e.g. SKF" /></div>
+        <div class="field"><label>Acquired company</label><input type="text" id="companyB" placeholder="e.g. JSG" /></div>
+        <div class="field"><label>Integration lead</label><input type="text" id="integLead" placeholder="e.g. Ritisha Singh" /></div>
+        <div class="field"><label>Target completion date</label><input type="date" id="targetDate" /></div>
+      </div>
+
+      <div class="setup-title" style="margin-top:1.5rem;">Select workstreams</div>
+      <div class="workstreams-grid" id="wsSelector">
+        <div class="ws-item selected" data-ws="policy"><div class="ws-check"><div class="ws-check-inner"></div></div><div><div class="ws-name">Policy & Process Mapping</div><div class="ws-desc">Align HR policies, procedures, and workflows</div></div></div>
+        <div class="ws-item selected" data-ws="hris"><div class="ws-check"><div class="ws-check-inner"></div></div><div><div class="ws-name">HRIS Data Migration</div><div class="ws-desc">Transfer employee data into unified HRIS</div></div></div>
+        <div class="ws-item selected" data-ws="it"><div class="ws-check"><div class="ws-check-inner"></div></div><div><div class="ws-name">IT Systems Integration</div><div class="ws-desc">Merge IT infrastructure and access management</div></div></div>
+        <div class="ws-item selected" data-ws="pc"><div class="ws-check"><div class="ws-check-inner"></div></div><div><div class="ws-name">PC Evaluation</div><div class="ws-desc">Assess and align job families and grades</div></div></div>
+        <div class="ws-item selected" data-ws="salary"><div class="ws-check"><div class="ws-check-inner"></div></div><div><div class="ws-name">Salary Transition</div><div class="ws-desc">Align compensation to acquiring company standards</div></div></div>
+        <div class="ws-item selected" data-ws="bonus"><div class="ws-check"><div class="ws-check-inner"></div></div><div><div class="ws-name">Bonus & Sales Incentive Policy</div><div class="ws-desc">Harmonise yearly bonus and sales incentive schemes</div></div></div>
+        <div class="ws-item selected" data-ws="ld"><div class="ws-check"><div class="ws-check-inner"></div></div><div><div class="ws-name">L&D / HRIS Training</div><div class="ws-desc">Training sessions for new HRIS systems</div></div></div>
+      </div>
+
+      <div class="setup-title" style="margin-top:1.5rem;">Add a custom workstream</div>
+      <div class="setup-grid" style="margin-bottom:.75rem;">
+        <div class="field"><label>Workstream name</label><input type="text" id="customWsName" placeholder="e.g. Payroll Integration" /></div>
+        <div class="field"><label>Description</label><input type="text" id="customWsDesc" placeholder="e.g. Align payroll systems and cycles" /></div>
+      </div>
+      <div class="field" style="margin-bottom:1rem;"><label>Milestones (one per line)</label><textarea id="customWsMilestones" placeholder="e.g. Audit current setup
+Map differences
+Design plan
+Test &amp; validate
+Go-live" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:Inter,sans-serif;font-size:.88rem;padding:.65rem .9rem;width:100%;outline:none;resize:vertical;min-height:90px;"></textarea></div>
+      <div style="display:flex;gap:.75rem;align-items:center;margin-bottom:1.5rem;">
+        <button class="btn-outline" onclick="addCustomWorkstream()">+ Add workstream</button>
+        <span id="customWsConfirm" style="font-size:.82rem;color:var(--green);display:none;">Added 2713</span>
+      </div>
+      <button class="btn-primary" onclick="launchDashboard()">Launch tracker</button>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="dashboard">
+    <div class="section-header">
+      <div class="section-title" id="dashTitle">Integration Dashboard</div>
+      <button class="btn-outline" onclick="resetDashboard()">← New integration</button>
+    </div>
+
+    <div class="summary-bar" id="summaryBar"></div>
+
+    <div class="section-header">
+      <div class="section-title">Workstream tracker</div>
+    </div>
+    <div class="ws-cards" id="wsCards"></div>
+
+    <div class="section-header">
+      <div class="section-title">Risk register</div>
+    </div>
+    <div class="add-risk-row">
+      <div class="field"><label>Risk description</label><input type="text" id="riskDesc" placeholder="Describe the risk..." /></div>
+      <div class="field"><label>Likelihood</label><select id="riskLikelihood"><option>High</option><option selected>Medium</option><option>Low</option></select></div>
+      <div class="field"><label>Impact</label><select id="riskImpact"><option>High</option><option selected>Medium</option><option>Low</option></select></div>
+      <div class="field"><label>Mitigation</label><input type="text" id="riskMitigation" placeholder="How will you mitigate?" /></div>
+      <div class="field"><label>&nbsp;</label><button class="btn-outline" onclick="addRisk()">+ Add</button></div>
+    </div>
+    <table class="risks-table">
+      <thead><tr><th>Risk</th><th>Likelihood</th><th>Impact</th><th>Mitigation</th><th>Workstream</th></tr></thead>
+      <tbody id="risksBody"></tbody>
+    </table>
+
+    <div class="ai-panel">
+      <div class="ai-title">AI integration advisor</div>
+      <p style="font-size:.85rem;color:var(--muted);margin-bottom:1rem;">Get AI-generated recommendations based on your current integration status, risks, and progress.</p>
+      <div class="ai-actions">
+        <button class="btn-primary" onclick="getAIAdvice('overall')">Overall recommendations</button>
+        <button class="btn-outline" onclick="getAIAdvice('risks')">Risk mitigation advice</button>
+        <button class="btn-outline" onclick="getAIAdvice('blockers')">Identify blockers</button>
+        <button class="btn-outline" onclick="getAIAdvice('next')">What to prioritise next</button>
+      </div>
+      <div id="aiLoading" style="display:none"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+      <div class="ai-output" id="aiOutput"></div>
+    </div>
+
+    <div class="section-header"><div class="section-title">Export</div></div>
+    <div class="export-row">
+      <button class="btn-primary" onclick="exportReport()">Download status report</button>
+      <button class="btn-outline" onclick="window.print()">Print / Save PDF</button>
+    </div>
+  </div>
+</main>
+
+<script>
+const WS_CONFIG = {
+  policy:  {name:'Policy & Process Mapping',   milestones:['Audit existing policies','Map policy gaps','Draft harmonised policies','Stakeholder sign-off','Publish final policies']},
+  hris:    {name:'HRIS Data Migration',         milestones:['Data audit & cleanse','Map data fields','Test migration (UAT)','Live migration','Validation & sign-off']},
+  it:      {name:'IT Systems Integration',      milestones:['IT asset inventory','Access rights mapping','System integration design','Testing','Go-live & decommission old systems']},
+  pc:      {name:'PC Evaluation',               milestones:['Job family framework review','Role mapping exercise','Grade alignment','Communicate outcomes','Update HRIS']},
+  salary:  {name:'Salary Transition',           milestones:['Compensation benchmarking','Gap analysis','Transition plan approved','Payroll updated','Employee communication']},
+  bonus:   {name:'Bonus & Sales Incentive',     milestones:['Review existing schemes','Design harmonised policy','Legal & finance review','Leadership approval','Roll out to employees']},
+  ld:      {name:'L&D / HRIS Training',         milestones:['Training needs analysis','Develop training materials','Pilot sessions','Full rollout','Effectiveness evaluation']},
+};
+
+let state = { companyA:'', companyB:'', integLead:'', targetDate:'', workstreams:{}, risks:[] };
+
+document.querySelectorAll('.ws-item').forEach(item => {
+  item.addEventListener('click', () => item.classList.toggle('selected'));
+});
+
+function launchDashboard() {
+  state.companyA = document.getElementById('companyA').value || 'Company A';
+  state.companyB = document.getElementById('companyB').value || 'Company B';
+  state.integLead = document.getElementById('integLead').value || 'Integration Lead';
+  state.targetDate = document.getElementById('targetDate').value;
+  const selected = [...document.querySelectorAll('.ws-item.selected')].map(el => el.dataset.ws);
+  if (!selected.length) { alert('Please select at least one workstream.'); return; }
+  selected.forEach(ws => {
+    state.workstreams[ws] = { rag:'amber', progress:0, milestones: WS_CONFIG[ws].milestones.map(m => ({text:m, done:false})), notes:'' };
+  });
+  document.getElementById('setupPanel').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+  document.getElementById('dashTitle').textContent = `${state.companyA} × ${state.companyB} Integration`;
+  renderAll();
+}
+
+function renderAll() { renderSummary(); renderWorkstreams(); renderRisks(); }
+
+function renderSummary() {
+  const wsList = Object.keys(state.workstreams);
+  const total = wsList.length;
+  const green = wsList.filter(w => state.workstreams[w].rag === 'green').length;
+  const red = wsList.filter(w => state.workstreams[w].rag === 'red').length;
+  const avgPct = total ? Math.round(wsList.reduce((s,w) => s + state.workstreams[w].progress, 0) / total) : 0;
+  document.getElementById('summaryBar').innerHTML = `
+    <div class="summary-card blue"><div class="summary-val">${total}</div><div class="summary-label">Workstreams</div></div>
+    <div class="summary-card"><div class="summary-val" style="color:var(--text)">${avgPct}%</div><div class="summary-label">Overall progress</div></div>
+    <div class="summary-card green"><div class="summary-val">${green}</div><div class="summary-label">On track</div></div>
+    <div class="summary-card red"><div class="summary-val">${red}</div><div class="summary-label">At risk</div></div>
+  `;
+}
+
+function renderWorkstreams() {
+  const container = document.getElementById('wsCards');
+  container.innerHTML = '';
+  Object.keys(state.workstreams).forEach(ws => {
+    const w = state.workstreams[ws];
+    const cfg = WS_CONFIG[ws];
+    const ragClass = `rag-${w.rag}`;
+    const fillClass = w.rag;
+    const milestonesHtml = w.milestones.map((m,i) => `
+      <div class="milestone-row">
+        <div class="milestone-check ${m.done?'done':''}" onclick="toggleMilestone('${ws}',${i})">
+          ${m.done ? '<svg width="8" height="8" viewBox="0 0 8 8"><polyline points="1,4 3,6 7,2" stroke="white" stroke-width="1.5" fill="none"/></svg>' : ''}
+        </div>
+        <span class="milestone-text ${m.done?'done':''}">${m.text}</span>
+      </div>`).join('');
+    const card = document.createElement('div');
+    card.className = 'ws-card';
+    card.innerHTML = `
+      <div class="ws-card-header">
+        <div class="ws-card-title">${cfg.name}</div>
+        <div class="ws-card-meta"><span class="rag ${ragClass}">${w.rag.toUpperCase()}</span></div>
+      </div>
+      <div class="progress-row">
+        <div class="progress-track"><div class="progress-fill ${fillClass}" style="width:${w.progress}%"></div></div>
+        <div class="progress-pct">${w.progress}%</div>
+      </div>
+      <div class="ws-controls">
+        <div class="field"><label>RAG status</label>
+          <select onchange="updateWS('${ws}','rag',this.value)">
+            <option value="green" ${w.rag==='green'?'selected':''}>Green — On track</option>
+            <option value="amber" ${w.rag==='amber'?'selected':''}>Amber — At risk</option>
+            <option value="red" ${w.rag==='red'?'selected':''}>Red — Blocked</option>
+          </select>
+        </div>
+        <div class="field"><label>Progress (%)</label>
+          <input type="number" min="0" max="100" value="${w.progress}" onchange="updateWS('${ws}','progress',parseInt(this.value)||0)" />
+        </div>
+      </div>
+      <div class="milestones">${milestonesHtml}</div>
+      <div class="add-milestone">
+        <input type="text" placeholder="Add milestone..." id="newM_${ws}" />
+        <button onclick="addMilestone('${ws}')">+ Add</button>
+      </div>`;
+    container.appendChild(card);
+  });
+}
+
+function renderRisks() {
+  const tbody = document.getElementById('risksBody');
+  tbody.innerHTML = '';
+  if (!state.risks.length) { tbody.innerHTML = '<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:1.5rem;">No risks logged yet</td></tr>'; return; }
+  state.risks.forEach((r,i) => {
+    const lc = r.likelihood==='High'?'color:var(--red)':r.likelihood==='Medium'?'color:var(--amber)':'color:var(--green)';
+    const ic = r.impact==='High'?'color:var(--red)':r.impact==='Medium'?'color:var(--amber)':'color:var(--green)';
+    tbody.innerHTML += `<tr><td>${r.desc}</td><td style="${lc};font-weight:500">${r.likelihood}</td><td style="${ic};font-weight:500">${r.impact}</td><td>${r.mitigation}</td><td><button onclick="removeRisk(${i})" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:.8rem;">✕</button></td></tr>`;
+  });
+}
+
+function updateWS(ws, key, val) { state.workstreams[ws][key] = val; renderAll(); }
+function toggleMilestone(ws, i) { state.workstreams[ws].milestones[i].done = !state.workstreams[ws].milestones[i].done; renderWorkstreams(); renderSummary(); }
+function addMilestone(ws) { const input = document.getElementById('newM_'+ws); if (input.value.trim()) { state.workstreams[ws].milestones.push({text:input.value.trim(),done:false}); input.value=''; renderWorkstreams(); } }
+function addRisk() {
+  const desc = document.getElementById('riskDesc').value.trim();
+  if (!desc) return;
+  state.risks.push({ desc, likelihood: document.getElementById('riskLikelihood').value, impact: document.getElementById('riskImpact').value, mitigation: document.getElementById('riskMitigation').value });
+  document.getElementById('riskDesc').value = ''; document.getElementById('riskMitigation').value = '';
+  renderRisks();
+}
+function removeRisk(i) { state.risks.splice(i,1); renderRisks(); }
+function addCustomWorkstream() {
+  const name = document.getElementById("customWsName").value.trim();
+  const desc = document.getElementById("customWsDesc").value.trim();
+  const raw = document.getElementById("customWsMilestones").value.trim();
+  if (!name) { alert("Please enter a workstream name."); return; }
+  const key = "custom_" + Date.now();
+  const milestones = raw ? raw.split("\n").map(m=>m.trim()).filter(Boolean) : ["Define scope","Plan","Execute","Review","Close"];
+  WS_CONFIG[key] = { name: name, milestones: milestones };
+  const grid = document.getElementById("wsSelector");
+  const item = document.createElement("div");
+  item.className = "ws-item selected";
+  item.dataset.ws = key;
+  item.innerHTML = "<div class=\"ws-check\"><div class=\"ws-check-inner\"></div></div><div><div class=\"ws-name\">" + name + "</div><div class=\"ws-desc\">" + (desc||"Custom workstream") + "</div></div>";
+  item.addEventListener("click", function(){ item.classList.toggle("selected"); });
+  grid.appendChild(item);
+  document.getElementById("customWsName").value="";
+  document.getElementById("customWsDesc").value="";
+  document.getElementById("customWsMilestones").value="";
+  const c = document.getElementById("customWsConfirm");
+  c.style.display="inline";
+  setTimeout(function(){ c.style.display="none"; }, 2000);
+}
+
+function resetDashboard() { state = {companyA:'',companyB:'',integLead:'',targetDate:'',workstreams:{},risks:[]}; document.getElementById('setupPanel').style.display='block'; document.getElementById('dashboard').style.display='none'; }
+
+async function getAIAdvice(type) {
+  document.getElementById('aiLoading').style.display = 'block';
+  document.getElementById('aiOutput').textContent = '';
+  const wsSummary = Object.keys(state.workstreams).map(ws => {
+    const w = state.workstreams[ws]; const cfg = WS_CONFIG[ws];
+    const done = w.milestones.filter(m=>m.done).length;
+    return `${cfg.name}: ${w.rag.toUpperCase()} — ${w.progress}% complete — ${done}/${w.milestones.length} milestones done`;
+  }).join('\n');
+  const riskSummary = state.risks.length ? state.risks.map(r=>`${r.desc} (${r.likelihood} likelihood, ${r.impact} impact)`).join('\n') : 'No risks logged';
+  const prompts = {
+    overall: `You are a post-merger integration expert. Based on this integration status between ${state.companyA} and ${state.companyB}, provide 4-5 specific, actionable recommendations to ensure successful integration:\n\nWorkstream status:\n${wsSummary}\n\nRisks:\n${riskSummary}\n\nProvide practical, experienced advice.`,
+    risks: `You are a post-merger integration expert. Analyse these integration risks for the ${state.companyA} × ${state.companyB} merger and provide specific mitigation strategies for each:\n\nRisks:\n${riskSummary}\n\nWorkstream context:\n${wsSummary}`,
+    blockers: `You are a post-merger integration expert. Based on this integration status, identify the likely blockers and dependencies that could delay successful completion:\n\nWorkstream status:\n${wsSummary}\n\nRisks:\n${riskSummary}`,
+    next: `You are a post-merger integration expert. Based on the current integration status below, recommend the top 3 priorities the team should focus on in the next 2 weeks:\n\nWorkstream status:\n${wsSummary}\n\nRisks:\n${riskSummary}`
+  };
+  try {
+    const res = await fetch('/.netlify/functions/claude-proxy', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ model:'gemini-2.0-flash', max_tokens:1000, messages:[{role:'user',content:prompts[type]}] })
+    });
+    const data = await res.json();
+    document.getElementById('aiOutput').textContent = data.content?.[0]?.text || 'No response generated.';
+  } catch(e) {
+    document.getElementById('aiOutput').textContent = 'Error getting recommendations. Please try again.';
+  }
+  document.getElementById('aiLoading').style.display = 'none';
+}
+
+function exportReport() {
+  const lines = [`POST-MERGER INTEGRATION STATUS REPORT`, `${state.companyA} × ${state.companyB}`, `Integration Lead: ${state.integLead}`, `Target Date: ${state.targetDate || 'Not set'}`, `Generated: ${new Date().toLocaleDateString()}`, ``, `WORKSTREAM STATUS`, `─────────────────`];
+  Object.keys(state.workstreams).forEach(ws => {
+    const w = state.workstreams[ws]; const cfg = WS_CONFIG[ws];
+    const done = w.milestones.filter(m=>m.done).length;
+    lines.push(`\n${cfg.name}`);
+    lines.push(`Status: ${w.rag.toUpperCase()} | Progress: ${w.progress}% | Milestones: ${done}/${w.milestones.length}`);
+    w.milestones.forEach(m => lines.push(`  ${m.done?'✓':'○'} ${m.text}`));
+  });
+  lines.push(`\nRISK REGISTER\n─────────────`);
+  if (state.risks.length) { state.risks.forEach(r => lines.push(`• ${r.desc} — Likelihood: ${r.likelihood}, Impact: ${r.impact}\n  Mitigation: ${r.mitigation}`)); }
+  else { lines.push('No risks logged.'); }
+  const blob = new Blob([lines.join('\n')], {type:'text/plain'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = `integration-report-${state.companyA}-${state.companyB}.txt`.replace(/\s/g,'-').toLowerCase();
+  a.click();
+}
+</script>
+</body>
+</html>
