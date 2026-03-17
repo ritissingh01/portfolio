@@ -26,7 +26,13 @@ exports.handler = async function(event) {
 
     const data = await response.json();
 
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No response generated.';
+    let text = 'No response generated.';
+    if (data.candidates && data.candidates.length > 0) {
+      const candidate = data.candidates[0];
+      if (candidate.content && candidate.content.parts && candidate.content.parts.length > 0) {
+        text = candidate.content.parts.map(p => p.text || '').join('');
+      }
+    }
 
     const anthropicFormat = {
       content: [{ type: 'text', text: text }]
